@@ -9,15 +9,26 @@ import (
 func main() {
 	ctx := logger.NewContext(context.Background())
 	doSomething(ctx)
+
+	jsonLogger := logger.NewLogger(logger.LoggerConfig{UseJSON: true})
+	ctx = logger.WithLogger(ctx, jsonLogger)
+	doSomethingWithJSON(ctx)
+
+	doSomethingElse(ctx)
 }
 
 func doSomething(ctx context.Context) {
 	log := logger.FromContext(ctx)
 	log.Info("Doing something", "step", 1)
-	doSomethingElse(ctx)
+}
+
+func doSomethingWithJSON(ctx context.Context) {
+	log := logger.FromContext(ctx)
+	log.Info("Doing something with JSON", "step", 2)
 }
 
 func doSomethingElse(ctx context.Context) {
-	log := logger.FromContext(ctx)
-	log.Info("Doing something else", "step", 2)
+	defaultCtx := logger.NewContext(context.Background())
+	log := logger.FromContext(defaultCtx)
+	log.Info("Doing something else", "step", 3)
 }
