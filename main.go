@@ -1,3 +1,4 @@
+// main.go
 package main
 
 import (
@@ -12,13 +13,30 @@ import (
 // Logger is a global variable that holds the logger instance
 var Logger logr.Logger
 
-func init() {
-	// Initialize the logger
-	zl := zerolog.New(os.Stderr).With().Timestamp().Logger()
-	Logger = zerologr.New(&zl)
+// LoggerConfig holds the configuration for the logger
+type LoggerConfig struct {
+	UseJSON bool
+}
+
+// NewLogger creates a new logger based on the provided configuration
+func NewLogger(config LoggerConfig) logr.Logger {
+	if config.UseJSON {
+		zl := zerolog.New(os.Stderr).With().Timestamp().Logger()
+		return zerologr.New(&zl)
+	}
+
+	// Text console logger
+	zl := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: "2006-01-02 15:04:05"}).With().Timestamp().Logger()
+	return zerologr.New(&zl)
 }
 
 func main() {
+	// Configure and create the logger
+	config := LoggerConfig{
+		UseJSON: false, // Set to true for JSON logging, false for text console logging
+	}
+	Logger = NewLogger(config)
+
 	// Create a context with the logger
 	ctx := logr.NewContext(context.Background(), Logger)
 
