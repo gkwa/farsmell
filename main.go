@@ -11,8 +11,8 @@ func main() {
 	ctx := logger.NewContext(context.Background())
 	doSomething(ctx)
 
-	jsonLogger := logger.NewLogger(logger.LoggerConfig{UseJSON: true, LogLevel: 0})
-	ctx = logger.WithLogger(ctx, jsonLogger)
+	myLogger := logger.NewLogger(logger.LoggerConfig{UseJSON: true, LogLevel: 0})
+	ctx = logger.WithLogger(ctx, myLogger)
 	doSomethingWithJSON(ctx)
 	doSomethingElse(ctx)
 }
