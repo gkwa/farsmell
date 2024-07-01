@@ -1,7 +1,7 @@
 BIN := farsmell
 PREFIX := main
 
-SRC := $(wildcard *.go **/*.go)
+SRC := $(shell find . -name '*.go')
 
 DATE := $(shell date +"%Y-%m-%dT%H:%M:%SZ")
 GOVERSION := $(shell go version)
